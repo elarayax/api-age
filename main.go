@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "aoe2-api/docs"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -8,8 +9,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-
-	_ "aoe2-api/docs"
 
 	httpSwagger "github.com/swaggo/http-swagger"
 	_ "modernc.org/sqlite"
@@ -37,7 +36,6 @@ var db *sql.DB
 // @title          AoE2 Civilizations API
 // @version        1.0
 // @description    API REST para gestionar civilizaciones de Age of Empires II.
-// @host           localhost:8080
 // @BasePath
 func main() {
 	var err error
