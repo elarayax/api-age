@@ -1,0 +1,200 @@
+definitions:
+  main.Civilization:
+    properties:
+      class:
+        example: Arqueros
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Británicos
+        type: string
+      specialty:
+        example: Alcance extra en sus arqueros
+        type: string
+      unique_unit:
+        example: Arquero de tiro largo
+        type: string
+    type: object
+  main.ErrorResponse:
+    properties:
+      error:
+        example: Civilización no encontrada
+        type: string
+    type: object
+  main.MessageResponse:
+    properties:
+      message:
+        example: Operación exitosa
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API REST para gestionar civilizaciones de Age of Empires II.
+  title: AoE2 Civilizations API
+  version: "1.0"
+paths:
+  /api/v1/civilizations:
+    get:
+      description: Retorna la lista completa de civilizaciones guardadas
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Civilization'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Obtener todas las civilizaciones
+      tags:
+      - Civilizaciones
+    post:
+      consumes:
+      - application/json
+      description: Agrega una nueva civilización a la base de datos
+      parameters:
+      - description: Datos de la civilización
+        in: body
+        name: civilization
+        required: true
+        schema:
+          $ref: '#/definitions/main.Civilization'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.Civilization'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Crear una civilización
+      tags:
+      - Civilizaciones
+  /api/v1/civilizations/{id}:
+    delete:
+      description: Borra una civilización de la base de datos por su ID
+      parameters:
+      - description: ID de la Civilización
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Eliminar una civilización
+      tags:
+      - Civilizaciones
+    get:
+      description: Busca y retorna una civilización específica
+      parameters:
+      - description: ID de la Civilización
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Civilization'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Obtener una civilización por ID
+      tags:
+      - Civilizaciones
+    patch:
+      consumes:
+      - application/json
+      description: Actualiza solo los campos enviados en el cuerpo JSON
+      parameters:
+      - description: ID de la Civilización
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Campos a actualizar (ej: {\'
+        in: body
+        name: fields
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Civilization'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Actualizar parcialmente una civilización (PATCH)
+      tags:
+      - Civilizaciones
+    put:
+      consumes:
+      - application/json
+      description: Actualiza todos los campos de una civilización por su ID
+      parameters:
+      - description: ID de la Civilización
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Nuevos datos completos
+        in: body
+        name: civilization
+        required: true
+        schema:
+          $ref: '#/definitions/main.Civilization'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Civilization'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Reemplazar completamente una civilización (PUT)
+      tags:
+      - Civilizaciones
+swagger: "2.0"
