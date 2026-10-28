@@ -6,9 +6,9 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "basePath": "/api/v1",
     "paths": {
-        "/api/v1/civilizations": {
+        "/civilizations": {
             "get": {
                 "description": "Retorna la lista completa de civilizaciones guardadas",
                 "produces": [
@@ -75,7 +75,7 @@
                 }
             }
         },
-        "/api/v1/civilizations/{id}": {
+        "/civilizations/{id}": {
             "get": {
                 "description": "Busca y retorna una civilización específica",
                 "produces": [

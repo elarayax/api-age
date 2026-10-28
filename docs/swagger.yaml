@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   main.Civilization:
     properties:
@@ -29,14 +30,13 @@ definitions:
         example: Operación exitosa
         type: string
     type: object
-host: localhost:8080
 info:
   contact: {}
   description: API REST para gestionar civilizaciones de Age of Empires II.
   title: AoE2 Civilizations API
   version: "1.0"
 paths:
-  /api/v1/civilizations:
+  /civilizations:
     get:
       description: Retorna la lista completa de civilizaciones guardadas
       produces:
@@ -80,7 +80,7 @@ paths:
       summary: Crear una civilización
       tags:
       - Civilizaciones
-  /api/v1/civilizations/{id}:
+  /civilizations/{id}:
     delete:
       description: Borra una civilización de la base de datos por su ID
       parameters:

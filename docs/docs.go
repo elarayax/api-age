@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/civilizations": {
+        "/civilizations": {
             "get": {
                 "description": "Retorna la lista completa de civilizaciones guardadas",
                 "produces": [
@@ -82,7 +82,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/civilizations/{id}": {
+        "/civilizations/{id}": {
             "get": {
                 "description": "Busca y retorna una civilización específica",
                 "produces": [
@@ -309,8 +309,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
-	BasePath:         "",
+	Host:             "",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "AoE2 Civilizations API",
 	Description:      "API REST para gestionar civilizaciones de Age of Empires II.",

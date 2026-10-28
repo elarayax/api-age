@@ -36,7 +36,7 @@ var db *sql.DB
 // @title          AoE2 Civilizations API
 // @version        1.0
 // @description    API REST para gestionar civilizaciones de Age of Empires II.
-// @BasePath
+// @BasePath       /api/v1
 func main() {
 	var err error
 	db, err = sql.Open("sqlite", "./aoe2.db")
@@ -120,7 +120,7 @@ func handleCivilizationByID(w http.ResponseWriter, r *http.Request) {
 // @Produce      json
 // @Success      200  {array}   Civilization
 // @Failure      500  {object}  ErrorResponse
-// @Router       /api/v1/civilizations [get]
+// @Router       /civilizations [get]
 func getCivilizations(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query("SELECT id, name, class, unique_unit, specialty FROM civilizations")
 	if err != nil {
@@ -151,7 +151,7 @@ func getCivilizations(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  Civilization
 // @Failure      400  {object}  ErrorResponse
 // @Failure      404  {object}  ErrorResponse
-// @Router       /api/v1/civilizations/{id} [get]
+// @Router       /civilizations/{id} [get]
 func getCivilizationByID(w http.ResponseWriter, r *http.Request, id int) {
 	var c Civilization
 	query := "SELECT id, name, class, unique_unit, specialty FROM civilizations WHERE id = ?"
@@ -177,7 +177,7 @@ func getCivilizationByID(w http.ResponseWriter, r *http.Request, id int) {
 // @Param        civilization  body      Civilization  true  "Datos de la civilización"
 // @Success      201           {object}  Civilization
 // @Failure      400           {object}  ErrorResponse
-// @Router       /api/v1/civilizations [post]
+// @Router       /civilizations [post]
 func createCivilization(w http.ResponseWriter, r *http.Request) {
 	var c Civilization
 	if err := json.NewDecoder(r.Body).Decode(&c); err != nil {
@@ -210,7 +210,7 @@ func createCivilization(w http.ResponseWriter, r *http.Request) {
 // @Success      200           {object}  Civilization
 // @Failure      400           {object}  ErrorResponse
 // @Failure      404           {object}  ErrorResponse
-// @Router       /api/v1/civilizations/{id} [put]
+// @Router       /civilizations/{id} [put]
 func updateCivilizationPUT(w http.ResponseWriter, r *http.Request, id int) {
 	var c Civilization
 	if err := json.NewDecoder(r.Body).Decode(&c); err != nil {
@@ -246,7 +246,7 @@ func updateCivilizationPUT(w http.ResponseWriter, r *http.Request, id int) {
 // @Success      200     {object}  Civilization
 // @Failure      400     {object}  ErrorResponse
 // @Failure      404     {object}  ErrorResponse
-// @Router       /api/v1/civilizations/{id} [patch]
+// @Router       /civilizations/{id} [patch]
 func updateCivilizationPATCH(w http.ResponseWriter, r *http.Request, id int) {
 	var fields map[string]interface{}
 	if err := json.NewDecoder(r.Body).Decode(&fields); err != nil {
@@ -296,7 +296,7 @@ func updateCivilizationPATCH(w http.ResponseWriter, r *http.Request, id int) {
 // @Param        id   path      int  true  "ID de la Civilización"
 // @Success      200  {object}  MessageResponse
 // @Failure      404  {object}  ErrorResponse
-// @Router       /api/v1/civilizations/{id} [delete]
+// @Router       /civilizations/{id} [delete]
 func deleteCivilization(w http.ResponseWriter, r *http.Request, id int) {
 	res, err := db.Exec("DELETE FROM civilizations WHERE id = ?", id)
 	if err != nil {
@@ -317,23 +317,15 @@ func deleteCivilization(w http.ResponseWriter, r *http.Request, id int) {
 // enableCORS envuelve un Handler de http y le añade las cabeceras CORS
 func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Permitir cualquier origen (para desarrollo)
-		// En producción reemplaza "*" por tu dominio, ej: "https://midominio.com"
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-
-		// Métodos HTTP permitidos
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
-
-		// Cabeceras permitidas en las solicitudes
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-		// Manejar las peticiones preflight (OPTIONS)
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
 
-		// Pasar la petición al siguiente handler
 		next.ServeHTTP(w, r)
 	})
 }
